@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.bodybuilding.bodybuilding_coach",
+    "sha256_cert_fingerprints": ["C6:EF:3C:C3:12:02:B0:CD:B8:19:62:58:50:32:AC:5E:BC:96:4E:B8:0A:C0:73:73:4C:8E:AB:79:39:01:A2:77"]
+  }
+}]
