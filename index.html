@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I/O Fit</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      max-width: 440px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #2196F3, #00BCD4);
+      padding: 36px 40px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .body {
+      padding: 40px;
+      text-align: center;
+    }
+
+    .icon {
+      font-size: 56px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 28px;
+    }
+
+    .step {
+      background: #f0f7ff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .step-num {
+      background: #2196F3;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .footer {
+      background: #f8fafc;
+      border-top: 1px solid #e8ecf0;
+      padding: 18px 40px;
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* Default state: generic landing */
+    #confirmed { display: none; }
+    #landing   { display: block; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="logo">I/O Fit</div>
+      <div class="tagline">Your Training. Elevated.</div>
+    </div>
+
+    <!-- Shown when ?code= is present (email confirmation / password reset) -->
+    <div class="body" id="confirmed">
+      <div class="icon">✅</div>
+      <h1 id="confirmed-title">Email Confirmed!</h1>
+      <p id="confirmed-body">Your email has been verified. Open the I/O Fit app on your phone to sign in.</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Open <strong>I/O Fit</strong> on your phone</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text" id="step2-text">Sign in with your email and password</div>
+      </div>
+    </div>
+
+    <!-- Shown when no auth code is present -->
+    <div class="body" id="landing">
+      <div class="icon">🏋️</div>
+      <h1>Train smarter.</h1>
+      <p>I/O Fit is a mobile app for tracking workouts, monitoring progression, and building the physique you're after.</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Download <strong>I/O Fit</strong> from the App Store or Google Play</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Create a free account and start training</div>
+      </div>
+    </div>
+
+    <div class="footer">© 2025 I/O Fit · iofit.app</div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const hasCode  = params.has('code');
+    const hasToken = params.has('token') || params.has('access_token');
+    const type     = params.get('type'); // 'recovery' for password reset
+
+    if (hasCode || hasToken) {
+      document.getElementById('confirmed').style.display = 'block';
+      document.getElementById('landing').style.display   = 'none';
+
+      if (type === 'recovery') {
+        document.getElementById('confirmed-title').textContent = 'Ready to Reset';
+        document.getElementById('confirmed-body').textContent  =
+          'Open the I/O Fit app on your phone to set your new password.';
+        document.getElementById('step2-text').textContent =
+          'Follow the prompts to set a new password';
+      }
+    }
+  </script>
+</body>
+</html>
