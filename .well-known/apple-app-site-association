@@ -4,7 +4,7 @@
     "details": [
       {
         "appIDs": ["44Y534D53A.com.bodybuilding.bodybuildingCoach"],
-        "paths": ["/share/*"]
+        "paths": ["/share/*", "/*"]
       }
     ]
   }
