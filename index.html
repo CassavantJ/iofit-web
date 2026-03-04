@@ -142,110 +142,107 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     // ── Fill in your values from Supabase → Settings → API ──────────────────
-    const SUPABASE_URL  = 'https://cuxjfjxitxpvazarmgvm.supabase.co';        // e.g. https://abcxyz.supabase.co
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGpmanhpdHhwdmF6YXJtZ3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODM4OTcsImV4cCI6MjA4NTY1OTg5N30.pWJ4fh2aOApDM9P77tNGk964dQ64dVl8BFGT1dKyo4M';
-    // ────────────────────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://cuxjfjxitxpvazarmgvm.supabase.co';
+const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
+// ────────────────────────────────────────────────────────────────────────
 
-    (async function () {
-      const params    = new URLSearchParams(window.location.search);
-      const hashParts = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+(async function () {
+  const params    = new URLSearchParams(window.location.search);
+  const hashParts = new URLSearchParams(window.location.hash.replace(/^#/, ''));
 
-      const code  = params.get('code');
-      const token = hashParts.get('access_token') || params.get('access_token');
-      const type  = params.get('type') || hashParts.get('type');
+  const code   = params.get('code');
+  const token  = hashParts.get('access_token') || params.get('access_token');
+  const action = params.get('action'); // 'reset' when coming from resetPasswordForEmail
 
-      if (!code && !token) return; // Normal landing page visit
+  if (!code && !token) return; // Normal landing page visit
 
-      // Any auth callback hides landing
-      document.getElementById('landing').style.display = 'none';
+  document.getElementById('landing').style.display = 'none';
 
-      if (type !== 'recovery') {
-        // Email confirmation (not a reset) — show existing confirmed card
-        document.getElementById('confirmed').style.display = 'block';
+  if (action !== 'reset') {
+    // Email confirmation (not a reset) — show confirmed card
+    document.getElementById('confirmed').style.display = 'block';
+    return;
+  }
+
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // ── Mobile: relay to app via custom scheme ───────────────────────────
+    const deepLink = 'io.iofit://login-callback?' + window.location.search.slice(1);
+
+    document.getElementById('confirmed').style.display  = 'block';
+    document.getElementById('confirmed-title').textContent = 'Reset Your Password';
+    document.getElementById('confirmed-body').textContent  =
+      'Tap the button below to open I/O Fit and set your new password.';
+    document.getElementById('step2-text').textContent =
+      'Follow the prompts to set a new password';
+
+    const btn = document.getElementById('open-btn');
+    btn.href = deepLink;
+    btn.style.display = 'inline-block';
+
+    setTimeout(function () { window.location.href = deepLink; }, 700);
+
+  } else {
+    // ── Desktop: handle reset entirely in the browser ────────────────────
+    document.getElementById('reset-web').style.display = 'block';
+
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    if (code) {
+      const { error } = await client.auth.exchangeCodeForSession(code);
+      if (error) {
+        document.getElementById('reset-icon').textContent  = '⚠️';
+        document.getElementById('reset-title').textContent = 'Link Expired';
+        document.getElementById('reset-body').textContent  =
+          'This link has already been used or has expired. Please request a new one in the app.';
+        document.getElementById('pw1').style.display       = 'none';
+        document.getElementById('pw2').style.display       = 'none';
+        document.getElementById('reset-btn').style.display = 'none';
         return;
       }
+    }
 
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    document.getElementById('reset-btn').addEventListener('click', async function () {
+      const pw1 = document.getElementById('pw1').value;
+      const pw2 = document.getElementById('pw2').value;
 
-      if (isMobile) {
-        // ── Mobile: relay to app via custom scheme ───────────────────────────
-        const deepLink = code
-          ? 'io.iofit://login-callback?' + window.location.search.slice(1)
-          : 'io.iofit://login-callback' + window.location.hash;
+      if (pw1.length < 8) { showError('Password must be at least 8 characters.'); return; }
+      if (pw1 !== pw2)    { showError('Passwords do not match.'); return; }
 
-        document.getElementById('confirmed').style.display  = 'block';
-        document.getElementById('confirmed-title').textContent = 'Reset Your Password';
-        document.getElementById('confirmed-body').textContent  =
-          'Tap the button below to open I/O Fit and set your new password.';
-        document.getElementById('step2-text').textContent =
-          'Follow the prompts to set a new password';
+      const btn = document.getElementById('reset-btn');
+      btn.disabled    = true;
+      btn.textContent = 'Saving…';
+      clearStatus();
 
-        const btn = document.getElementById('open-btn');
-        btn.href = deepLink;
-        btn.style.display = 'inline-block';
-
-        setTimeout(function () { window.location.href = deepLink; }, 700);
-
+      const { error } = await client.auth.updateUser({ password: pw1 });
+      if (error) {
+        showError(error.message);
+        btn.disabled    = false;
+        btn.textContent = 'Set New Password';
       } else {
-        // ── Desktop: handle reset entirely in the browser ────────────────────
-        document.getElementById('reset-web').style.display = 'block';
-
-        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-        if (code) {
-          const { error } = await client.auth.exchangeCodeForSession(code);
-          if (error) {
-            document.getElementById('reset-title').textContent = 'Link Expired';
-            document.getElementById('reset-body').textContent  =
-              'This password reset link has already been used or has expired. Please request a new one in the app.';
-            document.getElementById('reset-icon').textContent  = '⚠️';
-            document.getElementById('pw1').style.display  = 'none';
-            document.getElementById('pw2').style.display  = 'none';
-            document.getElementById('reset-btn').style.display = 'none';
-            return;
-          }
-        }
-
-        document.getElementById('reset-btn').addEventListener('click', async function () {
-          const pw1 = document.getElementById('pw1').value;
-          const pw2 = document.getElementById('pw2').value;
-
-          if (pw1.length < 8) { showError('Password must be at least 8 characters.'); return; }
-          if (pw1 !== pw2)    { showError('Passwords do not match.'); return; }
-
-          const btn = document.getElementById('reset-btn');
-          btn.disabled    = true;
-          btn.textContent = 'Saving…';
-          clearStatus();
-
-          const { error } = await client.auth.updateUser({ password: pw1 });
-          if (error) {
-            showError(error.message);
-            btn.disabled    = false;
-            btn.textContent = 'Set New Password';
-          } else {
-            document.getElementById('reset-icon').textContent  = '✅';
-            document.getElementById('reset-title').textContent = 'Password Updated!';
-            document.getElementById('reset-body').textContent  =
-              'Your password has been changed. You can now sign in to I/O Fit with your new password.';
-            document.getElementById('pw1').style.display       = 'none';
-            document.getElementById('pw2').style.display       = 'none';
-            document.getElementById('reset-btn').style.display = 'none';
-          }
-        });
+        document.getElementById('reset-icon').textContent  = '✅';
+        document.getElementById('reset-title').textContent = 'Password Updated!';
+        document.getElementById('reset-body').textContent  =
+          'Your password has been changed. You can now sign in to I/O Fit with your new password.';
+        document.getElementById('pw1').style.display       = 'none';
+        document.getElementById('pw2').style.display       = 'none';
+        document.getElementById('reset-btn').style.display = 'none';
       }
+    });
+  }
 
-      function showError(msg) {
-        const el = document.getElementById('status-msg');
-        el.textContent = msg;
-        el.className   = 'status-msg error';
-      }
-      function clearStatus() {
-        const el = document.getElementById('status-msg');
-        el.textContent = '';
-        el.className   = 'status-msg';
-      }
-    })();
+  function showError(msg) {
+    const el = document.getElementById('status-msg');
+    el.textContent = msg;
+    el.className   = 'status-msg error';
+  }
+  function clearStatus() {
+    const el = document.getElementById('status-msg');
+    el.textContent = '';
+    el.className   = 'status-msg';
+  }
+})();
   </script>
 </body>
 </html>
