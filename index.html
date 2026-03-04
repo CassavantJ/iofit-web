@@ -143,23 +143,27 @@
   <script>
     // ── Fill in your values from Supabase → Settings → API ──────────────────
 const SUPABASE_URL  = 'https://cuxjfjxitxpvazarmgvm.supabase.co';
-const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
-// ────────────────────────────────────────────────────────────────────────
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGpmanhpdHhwdmF6YXJtZ3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODM4OTcsImV4cCI6MjA4NTY1OTg5N30.pWJ4fh2aOApDM9P77tNGk964dQ64dVl8BFGT1dKyo4M';
 
 (async function () {
   const params    = new URLSearchParams(window.location.search);
   const hashParts = new URLSearchParams(window.location.hash.replace(/^#/, ''));
 
-  const code   = params.get('code');
-  const token  = hashParts.get('access_token') || params.get('access_token');
-  const action = params.get('action'); // 'reset' when coming from resetPasswordForEmail
+  const action      = params.get('action');
+  const code        = params.get('code');                          // PKCE (old links)
+  const accessToken = hashParts.get('access_token');              // implicit flow
+  const refreshToken = hashParts.get('refresh_token');
+  const type        = hashParts.get('type') || params.get('type');
 
-  if (!code && !token) return; // Normal landing page visit
+  const isReset = action === 'reset' || type === 'recovery';
+  const hasAuth = code || accessToken;
+
+  if (!hasAuth) return; // Normal landing page visit
 
   document.getElementById('landing').style.display = 'none';
 
-  if (action !== 'reset') {
-    // Email confirmation (not a reset) — show confirmed card
+  if (!isReset) {
+    // Email confirmation — show confirmed card
     document.getElementById('confirmed').style.display = 'block';
     return;
   }
@@ -167,8 +171,10 @@ const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   if (isMobile) {
-    // ── Mobile: relay to app via custom scheme ───────────────────────────
-    const deepLink = 'io.iofit://login-callback?' + window.location.search.slice(1);
+    // Forward everything to the app as-is
+    const deepLink = accessToken
+      ? 'io.iofit://login-callback' + window.location.hash
+      : 'io.iofit://login-callback?' + window.location.search.slice(1);
 
     document.getElementById('confirmed').style.display  = 'block';
     document.getElementById('confirmed-title').textContent = 'Reset Your Password';
@@ -180,27 +186,36 @@ const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
     const btn = document.getElementById('open-btn');
     btn.href = deepLink;
     btn.style.display = 'inline-block';
-
     setTimeout(function () { window.location.href = deepLink; }, 700);
 
   } else {
-    // ── Desktop: handle reset entirely in the browser ────────────────────
+    // Desktop — reset in browser
     document.getElementById('reset-web').style.display = 'block';
 
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: { flowType: 'implicit' }
+    });
 
-    if (code) {
+    let sessionError = null;
+    if (accessToken) {
+      // Implicit flow — restore session from hash tokens directly
+      const { error } = await client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+      sessionError = error;
+    } else if (code) {
+      // Fallback: old PKCE link — attempt exchange (may fail for cross-device)
       const { error } = await client.auth.exchangeCodeForSession(code);
-      if (error) {
-        document.getElementById('reset-icon').textContent  = '⚠️';
-        document.getElementById('reset-title').textContent = 'Link Expired';
-        document.getElementById('reset-body').textContent  =
-          'This link has already been used or has expired. Please request a new one in the app.';
-        document.getElementById('pw1').style.display       = 'none';
-        document.getElementById('pw2').style.display       = 'none';
-        document.getElementById('reset-btn').style.display = 'none';
-        return;
-      }
+      sessionError = error;
+    }
+
+    if (sessionError) {
+      document.getElementById('reset-icon').textContent  = '⚠️';
+      document.getElementById('reset-title').textContent = 'Link Expired';
+      document.getElementById('reset-body').textContent  =
+        'This link has already been used or has expired. Please request a new one in the app.';
+      document.getElementById('pw1').style.display       = 'none';
+      document.getElementById('pw2').style.display       = 'none';
+      document.getElementById('reset-btn').style.display = 'none';
+      return;
     }
 
     document.getElementById('reset-btn').addEventListener('click', async function () {
