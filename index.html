@@ -31,101 +31,58 @@
       padding: 36px 40px;
       text-align: center;
     }
+    .logo   { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .tagline { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
 
-    .logo {
-      font-size: 32px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
-    }
-
-    .tagline {
-      font-size: 13px;
-      color: rgba(255,255,255,0.8);
-      margin-top: 4px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .body {
-      padding: 40px;
-      text-align: center;
-    }
-
-    .icon {
-      font-size: 56px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 12px;
-    }
-
-    p {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 28px;
-    }
+    .body { padding: 40px; text-align: center; }
+    .icon { font-size: 56px; margin-bottom: 20px; }
+    h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
+    p  { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 28px; }
 
     .step {
-      background: #f0f7ff;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 12px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      background: #f0f7ff; border-radius: 12px; padding: 16px 20px;
+      margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 14px;
     }
-
     .step-num {
-      background: #2196F3;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      background: #2196F3; color: #fff; font-size: 13px; font-weight: 700;
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-
-    .step-text {
-      font-size: 14px;
-      color: #333;
-      line-height: 1.4;
-    }
+    .step-text { font-size: 14px; color: #333; line-height: 1.4; }
 
     .footer {
-      background: #f8fafc;
-      border-top: 1px solid #e8ecf0;
-      padding: 18px 40px;
-      text-align: center;
-      font-size: 12px;
-      color: #aaa;
+      background: #f8fafc; border-top: 1px solid #e8ecf0;
+      padding: 18px 40px; text-align: center; font-size: 12px; color: #aaa;
     }
 
     #open-btn {
-      display: none;
-      background: #2196F3;
-      color: #fff;
-      text-decoration: none;
-      padding: 15px 36px;
-      border-radius: 100px;
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 28px;
+      display: none; background: #2196F3; color: #fff; text-decoration: none;
+      padding: 15px 36px; border-radius: 100px; font-size: 16px; font-weight: 600; margin-bottom: 28px;
     }
     #open-btn:hover { background: #1976D2; }
 
-    /* Default state: generic landing */
+    /* Web password reset form */
+    .pw-input {
+      width: 100%; padding: 14px 16px; font-size: 15px;
+      border: 1.5px solid #dde1e7; border-radius: 12px;
+      margin-bottom: 14px; outline: none; transition: border-color 0.2s;
+    }
+    .pw-input:focus { border-color: #2196F3; }
+
+    .submit-btn {
+      width: 100%; background: #2196F3; color: #fff; border: none;
+      padding: 15px; border-radius: 100px; font-size: 16px; font-weight: 600;
+      cursor: pointer; margin-bottom: 16px; transition: background 0.2s;
+    }
+    .submit-btn:hover    { background: #1976D2; }
+    .submit-btn:disabled { background: #90CAF9; cursor: not-allowed; }
+
+    .status-msg { font-size: 14px; min-height: 20px; margin-bottom: 0; }
+    .status-msg.error   { color: #d32f2f; }
+    .status-msg.success { color: #2e7d32; }
+
     #confirmed { display: none; }
+    #reset-web { display: none; }
     #landing   { display: block; }
   </style>
 </head>
@@ -136,7 +93,7 @@
       <div class="tagline">Your Training. Elevated.</div>
     </div>
 
-    <!-- Shown when ?code= is present (email confirmation / password reset) -->
+    <!-- Email confirmed / mobile password-reset relay -->
     <div class="body" id="confirmed">
       <div class="icon">✅</div>
       <h1 id="confirmed-title">Email Confirmed!</h1>
@@ -152,7 +109,18 @@
       </div>
     </div>
 
-    <!-- Shown when no auth code is present -->
+    <!-- Password reset form shown on desktop -->
+    <div class="body" id="reset-web">
+      <div class="icon" id="reset-icon">🔐</div>
+      <h1 id="reset-title">Set New Password</h1>
+      <p id="reset-body">Enter your new password below.</p>
+      <input class="pw-input" type="password" id="pw1" placeholder="New password"      autocomplete="new-password" />
+      <input class="pw-input" type="password" id="pw2" placeholder="Confirm password" autocomplete="new-password" />
+      <button class="submit-btn" id="reset-btn">Set New Password</button>
+      <p class="status-msg" id="status-msg"></p>
+    </div>
+
+    <!-- Default landing page -->
     <div class="body" id="landing">
       <div class="icon">🏋️</div>
       <h1>Train smarter.</h1>
@@ -170,35 +138,114 @@
     <div class="footer">© 2025 I/O Fit · iofit.app</div>
   </div>
 
+  <!-- Supabase JS (used only for the desktop web reset form) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const hasCode  = params.has('code');
-    const hasToken = params.has('token') || params.has('access_token');
-    const type     = params.get('type');
+    // ── Fill in your values from Supabase → Settings → API ──────────────────
+    const SUPABASE_URL  = 'https://cuxjfjxitxpvazarmgvm.supabase.co';        // e.g. https://abcxyz.supabase.co
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGpmanhpdHhwdmF6YXJtZ3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODM4OTcsImV4cCI6MjA4NTY1OTg5N30.pWJ4fh2aOApDM9P77tNGk964dQ64dVl8BFGT1dKyo4M';
+    // ────────────────────────────────────────────────────────────────────────
 
-    if (hasCode || hasToken) {
-      document.getElementById('confirmed').style.display = 'block';
-      document.getElementById('landing').style.display   = 'none';
+    (async function () {
+      const params    = new URLSearchParams(window.location.search);
+      const hashParts = new URLSearchParams(window.location.hash.replace(/^#/, ''));
 
-      if (type === 'recovery') {
+      const code  = params.get('code');
+      const token = hashParts.get('access_token') || params.get('access_token');
+      const type  = params.get('type') || hashParts.get('type');
+
+      if (!code && !token) return; // Normal landing page visit
+
+      // Any auth callback hides landing
+      document.getElementById('landing').style.display = 'none';
+
+      if (type !== 'recovery') {
+        // Email confirmation (not a reset) — show existing confirmed card
+        document.getElementById('confirmed').style.display = 'block';
+        return;
+      }
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // ── Mobile: relay to app via custom scheme ───────────────────────────
+        const deepLink = code
+          ? 'io.iofit://login-callback?' + window.location.search.slice(1)
+          : 'io.iofit://login-callback' + window.location.hash;
+
+        document.getElementById('confirmed').style.display  = 'block';
         document.getElementById('confirmed-title').textContent = 'Reset Your Password';
         document.getElementById('confirmed-body').textContent  =
           'Tap the button below to open I/O Fit and set your new password.';
         document.getElementById('step2-text').textContent =
           'Follow the prompts to set a new password';
 
-        // Build deep link forwarding all query params to the app
-        const deepLink = 'io.iofit://login-callback?' + window.location.search.slice(1);
         const btn = document.getElementById('open-btn');
         btn.href = deepLink;
         btn.style.display = 'inline-block';
 
-        // On mobile, automatically try to open the app
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-          setTimeout(function () { window.location.href = deepLink; }, 700);
+        setTimeout(function () { window.location.href = deepLink; }, 700);
+
+      } else {
+        // ── Desktop: handle reset entirely in the browser ────────────────────
+        document.getElementById('reset-web').style.display = 'block';
+
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        if (code) {
+          const { error } = await client.auth.exchangeCodeForSession(code);
+          if (error) {
+            document.getElementById('reset-title').textContent = 'Link Expired';
+            document.getElementById('reset-body').textContent  =
+              'This password reset link has already been used or has expired. Please request a new one in the app.';
+            document.getElementById('reset-icon').textContent  = '⚠️';
+            document.getElementById('pw1').style.display  = 'none';
+            document.getElementById('pw2').style.display  = 'none';
+            document.getElementById('reset-btn').style.display = 'none';
+            return;
+          }
         }
+
+        document.getElementById('reset-btn').addEventListener('click', async function () {
+          const pw1 = document.getElementById('pw1').value;
+          const pw2 = document.getElementById('pw2').value;
+
+          if (pw1.length < 8) { showError('Password must be at least 8 characters.'); return; }
+          if (pw1 !== pw2)    { showError('Passwords do not match.'); return; }
+
+          const btn = document.getElementById('reset-btn');
+          btn.disabled    = true;
+          btn.textContent = 'Saving…';
+          clearStatus();
+
+          const { error } = await client.auth.updateUser({ password: pw1 });
+          if (error) {
+            showError(error.message);
+            btn.disabled    = false;
+            btn.textContent = 'Set New Password';
+          } else {
+            document.getElementById('reset-icon').textContent  = '✅';
+            document.getElementById('reset-title').textContent = 'Password Updated!';
+            document.getElementById('reset-body').textContent  =
+              'Your password has been changed. You can now sign in to I/O Fit with your new password.';
+            document.getElementById('pw1').style.display       = 'none';
+            document.getElementById('pw2').style.display       = 'none';
+            document.getElementById('reset-btn').style.display = 'none';
+          }
+        });
       }
-    }
+
+      function showError(msg) {
+        const el = document.getElementById('status-msg');
+        el.textContent = msg;
+        el.className   = 'status-msg error';
+      }
+      function clearStatus() {
+        const el = document.getElementById('status-msg');
+        el.textContent = '';
+        el.className   = 'status-msg';
+      }
+    })();
   </script>
 </body>
 </html>
