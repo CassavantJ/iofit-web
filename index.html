@@ -111,6 +111,19 @@
       color: #aaa;
     }
 
+    #open-btn {
+      display: none;
+      background: #2196F3;
+      color: #fff;
+      text-decoration: none;
+      padding: 15px 36px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+    #open-btn:hover { background: #1976D2; }
+
     /* Default state: generic landing */
     #confirmed { display: none; }
     #landing   { display: block; }
@@ -128,6 +141,7 @@
       <div class="icon">✅</div>
       <h1 id="confirmed-title">Email Confirmed!</h1>
       <p id="confirmed-body">Your email has been verified. Open the I/O Fit app on your phone to sign in.</p>
+      <a id="open-btn" href="#">Open I/O Fit</a>
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-text">Open <strong>I/O Fit</strong> on your phone</div>
@@ -160,18 +174,29 @@
     const params = new URLSearchParams(window.location.search);
     const hasCode  = params.has('code');
     const hasToken = params.has('token') || params.has('access_token');
-    const type     = params.get('type'); // 'recovery' for password reset
+    const type     = params.get('type');
 
     if (hasCode || hasToken) {
       document.getElementById('confirmed').style.display = 'block';
       document.getElementById('landing').style.display   = 'none';
 
       if (type === 'recovery') {
-        document.getElementById('confirmed-title').textContent = 'Ready to Reset';
+        document.getElementById('confirmed-title').textContent = 'Reset Your Password';
         document.getElementById('confirmed-body').textContent  =
-          'Open the I/O Fit app on your phone to set your new password.';
+          'Tap the button below to open I/O Fit and set your new password.';
         document.getElementById('step2-text').textContent =
           'Follow the prompts to set a new password';
+
+        // Build deep link forwarding all query params to the app
+        const deepLink = 'io.iofit://login-callback?' + window.location.search.slice(1);
+        const btn = document.getElementById('open-btn');
+        btn.href = deepLink;
+        btn.style.display = 'inline-block';
+
+        // On mobile, automatically try to open the app
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          setTimeout(function () { window.location.href = deepLink; }, 700);
+        }
       }
     }
   </script>
