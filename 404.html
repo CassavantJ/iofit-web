@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found — I/O Fit</title>
+  <meta name="description" content="I/O Fit" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0b0b12" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f4f5fa" media="(prefers-color-scheme: light)" />
+  <link rel="icon" type="image/png" href="/icons/favicon-64.png" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/icons/apple-touch-icon.png" alt="" />I/O Fit</a>
+      <nav class="nav">
+        <a class="hide-sm" href="/#features">Features</a>
+        <a href="/#pro">Pro</a>
+        <a href="/support">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="center-page">
+<div class="panel" id="share" hidden>
+  <div class="big-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+  </div>
+  <h1>Open in I/O Fit</h1>
+  <p>Someone shared an exercise, template or program with you. Open this link on your phone with I/O Fit installed to preview and import it.</p>
+  <a class="btn btn-primary" id="open-app" href="#" hidden>Open in I/O Fit</a>
+  <div class="steps">
+    <div class="step"><b>1</b><span>Install <strong>I/O Fit</strong> (coming soon to the App Store)</span></div>
+    <div class="step"><b>2</b><span>Tap the shared link again to open it in the app</span></div>
+  </div>
+</div>
+<div class="panel" id="missing" hidden>
+  <div class="big-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+  </div>
+  <h1>Page not found</h1>
+  <p>That page doesn't exist. It may have moved, or the link may be mistyped.</p>
+  <a class="btn btn-primary" href="/">Go to the home page</a>
+</div>
+</main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© <span class="year">2026</span> I/O Fit</span>
+      <nav>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Use</a>
+        <a href="/support">Support</a>
+      </nav>
+    </div>
+  </footer>
+  <script>for (const el of document.querySelectorAll('.year')) el.textContent = new Date().getFullYear();</script>
+  <script>
+    (function () {
+      var m = window.location.pathname.match(/^\/share\/([A-Za-z0-9_-]+)\/?$/);
+      if (!m) { document.getElementById('missing').hidden = false; return; }
+      document.title = 'Shared with you — I/O Fit';
+      document.getElementById('share').hidden = false;
+      // Android: open the app directly when it's installed (falls back to
+      // Google Play otherwise).
+      if (/Android/i.test(navigator.userAgent)) {
+        var btn = document.getElementById('open-app');
+        btn.href = 'intent://iofit.app/share/' + m[1] +
+          '#Intent;scheme=https;package=com.bodybuilding.bodybuilding_coach;end';
+        btn.hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>

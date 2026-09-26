@@ -4,7 +4,11 @@
     "details": [
       {
         "appIDs": ["44Y534D53A.com.bodybuilding.bodybuildingCoach"],
-        "paths": ["/share/*", "/*"]
+        "components": [
+          { "/": "/share/*", "comment": "Shared exercises, templates and programs" },
+          { "/": "/", "comment": "Email links: sign-up confirmation and password reset" }
+        ],
+        "paths": ["/share/*", "/"]
       }
     ]
   }
