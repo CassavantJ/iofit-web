@@ -1,277 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Open Graph (controls link preview in share sheets, iMessage, Slack, etc.) -->
-<meta property="og:title"       content="I/O Fit — Workout Tracker" />
-<meta property="og:description" content="Track workouts, monitor progression, and build the physique you're after." />
-<meta property="og:url"         content="https://iofit.app" />
-<meta property="og:type"        content="website" />
-<meta property="og:image"       content="https://iofit.app/icons/iofit-appicon-gradient.png" />
-<meta property="og:image:width"  content="512" />
-<meta property="og:image:height" content="512" />
-
-<!-- Twitter/X card (same image, also used by some apps) -->
-<meta name="twitter:card"        content="summary" />
-<meta name="twitter:title"       content="I/O Fit — Workout Tracker" />
-<meta name="twitter:description" content="Track workouts, monitor progression, and build the physique you're after." />
-<meta name="twitter:image"       content="https://iofit.app/icons/iofit-appicon-gradient.png" />
-  <title>I/O Fit</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f0f4f8;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-      max-width: 440px;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #2196F3, #00BCD4);
-      padding: 36px 40px;
-      text-align: center;
-    }
-    .logo   { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-    .tagline { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
-
-    .body { padding: 40px; text-align: center; }
-    .icon { font-size: 56px; margin-bottom: 20px; }
-    h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
-    p  { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 28px; }
-
-    .step {
-      background: #f0f7ff; border-radius: 12px; padding: 16px 20px;
-      margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 14px;
-    }
-    .step-num {
-      background: #2196F3; color: #fff; font-size: 13px; font-weight: 700;
-      width: 28px; height: 28px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .step-text { font-size: 14px; color: #333; line-height: 1.4; }
-
-    .footer {
-      background: #f8fafc; border-top: 1px solid #e8ecf0;
-      padding: 18px 40px; text-align: center; font-size: 12px; color: #aaa;
-    }
-
-    #open-btn {
-      display: none; background: #2196F3; color: #fff; text-decoration: none;
-      padding: 15px 36px; border-radius: 100px; font-size: 16px; font-weight: 600; margin-bottom: 28px;
-    }
-    #open-btn:hover { background: #1976D2; }
-
-    /* Web password reset form */
-    .pw-input {
-      width: 100%; padding: 14px 16px; font-size: 15px;
-      border: 1.5px solid #dde1e7; border-radius: 12px;
-      margin-bottom: 14px; outline: none; transition: border-color 0.2s;
-    }
-    .pw-input:focus { border-color: #2196F3; }
-
-    .submit-btn {
-      width: 100%; background: #2196F3; color: #fff; border: none;
-      padding: 15px; border-radius: 100px; font-size: 16px; font-weight: 600;
-      cursor: pointer; margin-bottom: 16px; transition: background 0.2s;
-    }
-    .submit-btn:hover    { background: #1976D2; }
-    .submit-btn:disabled { background: #90CAF9; cursor: not-allowed; }
-
-    .status-msg { font-size: 14px; min-height: 20px; margin-bottom: 0; }
-    .status-msg.error   { color: #d32f2f; }
-    .status-msg.success { color: #2e7d32; }
-
-    #confirmed { display: none; }
-    #reset-web { display: none; }
-    #landing   { display: block; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I/O Fit — Train smarter. Track everything.</title>
+  <meta name="description" content="I/O Fit is a workout tracker with smart progression, training programs, recovery insights and food tracking — in one clean app for iPhone and Android." />
+  <meta name="theme-color" content="#0b0b12" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f4f5fa" media="(prefers-color-scheme: light)" />
+  <link rel="canonical" href="https://iofit.app/" />
+  <link rel="icon" type="image/png" href="/icons/favicon-64.png" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://iofit.app/" />
+  <meta property="og:title" content="I/O Fit — Train smarter. Track everything." />
+  <meta property="og:description" content="Workout tracking with smart progression, programs, recovery insights and food tracking." />
+  <meta property="og:image" content="https://iofit.app/icons/iofit-icon-512.png" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
-  <div class="card">
-    <div class="header">
-      <div class="logo">I/O Fit</div>
-      <div class="tagline">Your Training. Elevated.</div>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/icons/apple-touch-icon.png" alt="" />I/O Fit</a>
+      <nav class="nav">
+        <a class="hide-sm" href="/#features">Features</a>
+        <a href="/#pro">Pro</a>
+        <a href="/support">Support</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Email confirmed / mobile password-reset relay -->
-    <div class="body" id="confirmed">
-      <div class="icon">✅</div>
-      <h1 id="confirmed-title">Email Confirmed!</h1>
-      <p id="confirmed-body">Your email has been verified. Open the I/O Fit app on your phone to sign in.</p>
-      <a id="open-btn" href="#">Open I/O Fit</a>
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-text">Open <strong>I/O Fit</strong> on your phone</div>
+  <!-- ── Email links (sign-up confirmation, password reset) ──────────────
+       Supabase sends people here with tokens in the URL. assets/index.js
+       decides which card to show; without tokens this stays hidden. -->
+  <main id="auth" class="center-page" hidden>
+    <!-- Email confirmed, or password reset handed over to the phone app -->
+    <div class="panel" id="confirmed" hidden>
+      <div class="big-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-text" id="step2-text">Sign in with your email and password</div>
-      </div>
-    </div>
-
-    <!-- Password reset form shown on desktop -->
-    <div class="body" id="reset-web">
-      <div class="icon" id="reset-icon">🔐</div>
-      <h1 id="reset-title">Set New Password</h1>
-      <p id="reset-body">Enter your new password below.</p>
-      <input class="pw-input" type="password" id="pw1" placeholder="New password"      autocomplete="new-password" />
-      <input class="pw-input" type="password" id="pw2" placeholder="Confirm password" autocomplete="new-password" />
-      <button class="submit-btn" id="reset-btn">Set New Password</button>
-      <p class="status-msg" id="status-msg"></p>
-    </div>
-
-    <!-- Default landing page -->
-    <div class="body" id="landing">
-      <div class="icon">🏋️</div>
-      <h1>Train smarter.</h1>
-      <p>I/O Fit is a mobile app for tracking workouts, monitoring progression, and building the physique you're after.</p>
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-text">Download <strong>I/O Fit</strong> from the App Store or Google Play</div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-text">Create a free account and start training</div>
+      <h1 id="confirmed-title">Email confirmed</h1>
+      <p id="confirmed-body">Your email is verified. Open I/O Fit on your phone to sign in.</p>
+      <a class="btn btn-primary" id="open-btn" href="#" hidden>Open I/O Fit</a>
+      <div class="steps">
+        <div class="step"><b>1</b><span>Open <strong>I/O Fit</strong> on your phone</span></div>
+        <div class="step"><b>2</b><span id="step2-text">Sign in with your email and password</span></div>
       </div>
     </div>
 
-    <div class="footer">© 2025 I/O Fit · iofit.app</div>
+    <!-- Password reset in the browser (desktop) -->
+    <div class="panel" id="reset-web" hidden>
+      <div class="big-icon" id="reset-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <h1 id="reset-title">Set a new password</h1>
+      <p id="reset-body">Choose a new password for your I/O Fit account.</p>
+      <form id="reset-form" novalidate>
+        <input class="field" type="password" id="pw1" placeholder="New password" autocomplete="new-password" />
+        <input class="field" type="password" id="pw2" placeholder="Confirm password" autocomplete="new-password" />
+        <button class="btn btn-primary" id="reset-btn" type="submit">Set new password</button>
+      </form>
+      <p class="status-msg" id="status-msg" role="status"></p>
+    </div>
+  </main>
+
+  <!-- ── Marketing site ────────────────────────────────────────────────── -->
+  <div id="site">
+    <section class="hero">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow">Workout &amp; nutrition tracker</span>
+          <h1>Train smarter.<br /><span class="gradient-text">Track everything.</span></h1>
+          <p class="lead">I/O Fit plans your training, logs every set with smart progression and shows how your body responds, all in one clean app.</p>
+          <div class="cta-row">
+            <!-- Swap this for the App Store link once I/O Fit is live, e.g.
+                 <a class="btn btn-primary" href="https://apps.apple.com/app/id0000000000"> -->
+            <span class="btn btn-primary" aria-disabled="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.37 12.6c-.02-2.1 1.72-3.12 1.8-3.17-1-1.44-2.53-1.64-3.07-1.66-1.3-.13-2.55.77-3.21.77-.67 0-1.69-.75-2.78-.73-1.43.02-2.75.83-3.49 2.11-1.49 2.58-.38 6.4 1.07 8.5.71 1.02 1.55 2.17 2.66 2.13 1.07-.04 1.47-.69 2.76-.69 1.29 0 1.65.69 2.78.67 1.15-.02 1.88-1.04 2.58-2.07.81-1.19 1.15-2.34 1.17-2.4-.03-.01-2.24-.86-2.27-3.46ZM14.25 6.43c.59-.72.99-1.71.88-2.7-.85.03-1.88.57-2.49 1.28-.55.63-1.03 1.64-.9 2.61.95.07 1.92-.48 2.51-1.19Z"/></svg>
+              Coming soon on the App Store
+            </span>
+            <a class="btn btn-secondary" href="#features">See features</a>
+          </div>
+          <p class="fine">Free to use. Pro unlocks food tracking and deeper insights.</p>
+        </div>
+        <div class="phones" aria-hidden="true">
+          <div class="phone"><img src="/assets/screens/home.webp" alt="" width="590" height="1278" /></div>
+          <div class="phone"><img src="/assets/screens/workout.webp" alt="" width="590" height="1278" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Everything you need to train</h2>
+          <p class="muted">No clutter, no ads. The core of I/O Fit is free and works offline, with or without an account.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="icon-badge" style="--c:#6366f1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M3 10l7-7M14 21l7-7M5.5 12.5l7-7M11.5 18.5l7-7"/></svg></div>
+            <h3>Workout logging</h3>
+            <p>Log sets in seconds with last time's numbers beside every set, a rest timer and automatic personal records.</p>
+          </div>
+          <div class="card">
+            <div class="icon-badge" style="--c:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+            <h3>Smart progression</h3>
+            <p>I/O Fit suggests when to add reps or weight, based on what you actually lifted last time.</p>
+          </div>
+          <div class="card">
+            <div class="icon-badge" style="--c:#3b82f6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
+            <h3>Programs &amp; templates</h3>
+            <p>Follow a starter program or build your own weekly split. Home tells you what to train today.</p>
+          </div>
+          <div class="card">
+            <div class="icon-badge" style="--c:#f59e0b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 6.5h7M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5v3M8.5 18h.01M12 18h.01"/></svg></div>
+            <h3>Gym tools</h3>
+            <p>Plate calculator, one-rep-max estimates and warm-up sets that fit your working weight.</p>
+          </div>
+          <div class="card">
+            <div class="icon-badge" style="--c:#fbbf24"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div>
+            <h3>Streaks &amp; achievements</h3>
+            <p>Weekly goals, a training calendar and badges that reward showing up.</p>
+          </div>
+          <div class="card">
+            <div class="icon-badge" style="--c:#22d3ee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 18 9a4 4 0 0 1-1 8"/><path d="M12 12v8M9 17l3 3 3-3"/></svg></div>
+            <h3>Sync &amp; sharing</h3>
+            <p>Start as a guest, sign in whenever you like, and share exercises, templates and programs with a link.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Built for the gym floor</h2>
+          <p class="muted">Big targets, dark mode and one-handed logging, so the app stays out of your way between sets.</p>
+        </div>
+        <div class="screens">
+          <figure><div class="phone"><img src="/assets/screens/home.webp" alt="Home screen with this week's progress" loading="lazy" width="590" height="1278" /></div><figcaption>Your week at a glance</figcaption></figure>
+          <figure><div class="phone"><img src="/assets/screens/workout.webp" alt="Logging sets during a workout" loading="lazy" width="590" height="1278" /></div><figcaption>Fast set logging</figcaption></figure>
+          <figure><div class="phone"><img src="/assets/screens/recovery.webp" alt="Muscle recovery map" loading="lazy" width="590" height="1278" /></div><figcaption>Recovery map</figcaption></figure>
+          <figure><div class="phone"><img src="/assets/screens/nutrition.webp" alt="Food diary with calories and macros" loading="lazy" width="590" height="1278" /></div><figcaption>Food tracking</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="pro">
+      <div class="wrap">
+        <div class="pro">
+          <div>
+            <span class="pro-badge">PRO</span>
+            <h2 style="margin-top:14px">Go further with I/O Fit Pro</h2>
+            <p class="muted">Track what you eat and get deeper insights into your training. Choose monthly, yearly or a one-time lifetime unlock, and manage it anytime from your App Store or Google Play account.</p>
+            <div class="free-note">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7Z"/></svg>
+              Workout logging, programs, tools and sync stay free.
+            </div>
+          </div>
+          <ul class="pro-list">
+            <li><div class="icon-badge" style="--c:#f43f5e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v8a2 2 0 0 0 4 0V2M8 12v10M17 2c-1.7 0-3 2.2-3 5s1.3 5 3 5v10"/></svg></div><div><strong>Food tracking</strong><span>Search foods or scan barcodes, with calories, macros and water.</span></div></li>
+            <li><div class="icon-badge" style="--c:#8b5cf6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><div><strong>Progress reports</strong><span>Weekly and monthly recaps of training, nutrition and weight.</span></div></li>
+            <li><div class="icon-badge" style="--c:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div><div><strong>Recovery map</strong><span>See which muscles are fresh and which still need rest.</span></div></li>
+            <li><div class="icon-badge" style="--c:#0891b2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="8" rx="2"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/></svg></div><div><strong>Body measurements</strong><span>Track waist, chest, arms, body fat and more over time.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-head"><h2>Questions</h2></div>
+        <div class="faq">
+          <details>
+            <summary>Is I/O Fit free?</summary>
+            <p>Yes. Workout logging, programs, templates, exercise history, tools, achievements and cloud sync are free. I/O Fit Pro is an optional upgrade that adds food tracking, progress reports, the recovery map and body measurements.</p>
+          </details>
+          <details>
+            <summary>Do I need an account?</summary>
+            <p>No. You can use I/O Fit as a guest and your data stays on your phone. Create an account whenever you want a backup or to use I/O Fit on another device; your guest data comes with you.</p>
+          </details>
+          <details>
+            <summary>How do I cancel Pro?</summary>
+            <p>Subscriptions are managed by Apple or Google. On iPhone, open Settings → your name → Subscriptions. On Android, open Google Play → Profile → Payments &amp; subscriptions. <a href="/support#cancel">More help</a></p>
+          </details>
+          <details>
+            <summary>What happens to my data?</summary>
+            <p>Your training data is yours. It's never sold and there are no ads. Read the <a href="/privacy">privacy policy</a> for the details.</p>
+          </details>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <!-- Supabase JS (used only for the desktop web reset form) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script>
-    // ── Fill in your values from Supabase → Settings → API ──────────────────
-const SUPABASE_URL  = 'https://cuxjfjxitxpvazarmgvm.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eGpmanhpdHhwdmF6YXJtZ3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwODM4OTcsImV4cCI6MjA4NTY1OTg5N30.pWJ4fh2aOApDM9P77tNGk964dQ64dVl8BFGT1dKyo4M';
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© <span class="year">2026</span> I/O Fit</span>
+      <nav>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/support">Support</a>
+      </nav>
+    </div>
+  </footer>
 
-(async function () {
-  const params    = new URLSearchParams(window.location.search);
-  const hashParts = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-
-  const action      = params.get('action');
-  const code        = params.get('code');                          // PKCE (old links)
-  const accessToken = hashParts.get('access_token');              // implicit flow
-  const refreshToken = hashParts.get('refresh_token');
-  const type        = hashParts.get('type') || params.get('type');
-
-  const isReset = action === 'reset' || type === 'recovery';
-  const hasAuth = code || accessToken;
-
-  if (!hasAuth) return; // Normal landing page visit
-
-  document.getElementById('landing').style.display = 'none';
-
-  if (!isReset) {
-    // Email confirmation — show confirmed card
-    document.getElementById('confirmed').style.display = 'block';
-    return;
-  }
-
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  if (isMobile) {
-    // Forward everything to the app as-is
-    const deepLink = accessToken
-      ? 'io.iofit://login-callback' + window.location.hash
-      : 'io.iofit://login-callback?' + window.location.search.slice(1);
-
-    document.getElementById('confirmed').style.display  = 'block';
-    document.getElementById('confirmed-title').textContent = 'Reset Your Password';
-    document.getElementById('confirmed-body').textContent  =
-      'Tap the button below to open I/O Fit and set your new password.';
-    document.getElementById('step2-text').textContent =
-      'Follow the prompts to set a new password';
-
-    const btn = document.getElementById('open-btn');
-    btn.href = deepLink;
-    btn.style.display = 'inline-block';
-    setTimeout(function () { window.location.href = deepLink; }, 700);
-
-  } else {
-    // Desktop — reset in browser
-    document.getElementById('reset-web').style.display = 'block';
-
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-      auth: { flowType: 'implicit' }
-    });
-
-    let sessionError = null;
-    if (accessToken) {
-      // Implicit flow — restore session from hash tokens directly
-      const { error } = await client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
-      sessionError = error;
-    } else if (code) {
-      // Fallback: old PKCE link — attempt exchange (may fail for cross-device)
-      const { error } = await client.auth.exchangeCodeForSession(code);
-      sessionError = error;
-    }
-
-    if (sessionError) {
-      document.getElementById('reset-icon').textContent  = '⚠️';
-      document.getElementById('reset-title').textContent = 'Link Expired';
-      document.getElementById('reset-body').textContent  =
-        'This link has already been used or has expired. Please request a new one in the app.';
-      document.getElementById('pw1').style.display       = 'none';
-      document.getElementById('pw2').style.display       = 'none';
-      document.getElementById('reset-btn').style.display = 'none';
-      return;
-    }
-
-    document.getElementById('reset-btn').addEventListener('click', async function () {
-      const pw1 = document.getElementById('pw1').value;
-      const pw2 = document.getElementById('pw2').value;
-
-      if (pw1.length < 8) { showError('Password must be at least 8 characters.'); return; }
-      if (pw1 !== pw2)    { showError('Passwords do not match.'); return; }
-
-      const btn = document.getElementById('reset-btn');
-      btn.disabled    = true;
-      btn.textContent = 'Saving…';
-      clearStatus();
-
-      const { error } = await client.auth.updateUser({ password: pw1 });
-      if (error) {
-        showError(error.message);
-        btn.disabled    = false;
-        btn.textContent = 'Set New Password';
-      } else {
-        document.getElementById('reset-icon').textContent  = '✅';
-        document.getElementById('reset-title').textContent = 'Password Updated!';
-        document.getElementById('reset-body').textContent  =
-          'Your password has been changed. You can now sign in to I/O Fit with your new password.';
-        document.getElementById('pw1').style.display       = 'none';
-        document.getElementById('pw2').style.display       = 'none';
-        document.getElementById('reset-btn').style.display = 'none';
-      }
-    });
-  }
-
-  function showError(msg) {
-    const el = document.getElementById('status-msg');
-    el.textContent = msg;
-    el.className   = 'status-msg error';
-  }
-  function clearStatus() {
-    const el = document.getElementById('status-msg');
-    el.textContent = '';
-    el.className   = 'status-msg';
-  }
-})();
-  </script>
+  <script src="/assets/index.js"></script>
 </body>
 </html>
